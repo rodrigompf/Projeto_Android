@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "539364774897",
+    "project_id": "hotcue-2a75d",
+    "storage_bucket": "hotcue-2a75d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539364774897:android:a3fee9c6efd5b826f16a50",
+        "android_client_info": {
+          "package_name": "com.example.hotcue"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiunqS85Iu29Xu8CpK-rY05X0SAb8fKq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
