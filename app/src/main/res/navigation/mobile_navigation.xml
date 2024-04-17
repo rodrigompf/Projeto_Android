@@ -22,4 +22,16 @@
         android:name="com.example.hotcue.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.hotcue.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_votes"
+        android:name="com.example.hotcue.ui.votes.VotesFragment"
+        android:label="@string/menu_votes"
+        tools:layout="@layout/fragment_votes" />
 </navigation>
