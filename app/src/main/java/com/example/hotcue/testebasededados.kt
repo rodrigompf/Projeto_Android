@@ -1,6 +1,7 @@
 package com.example.hotcue
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
@@ -17,8 +18,19 @@ class testebasededados : AppCompatActivity() {
         var editText1 = findViewById<EditText>(R.id.editText1)
         var editText2 = findViewById<EditText>(R.id.editText2)
 
+        var editText3 = findViewById<EditText>(R.id.editText3)
+        var editText4 = findViewById<EditText>(R.id.editText4)
+
+
+
         // Read data from Firestore
         readDataFromFirestore(editText1,editText2);
+
+        val addButton = findViewById<Button>(R.id.addButton)
+
+        addButton.setOnClickListener {
+            addDataToFirestore(editText3, editText4)
+        }
     }
 
     private fun readDataFromFirestore(editText1: EditText, editText2: EditText) {
@@ -41,6 +53,29 @@ class testebasededados : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 println("Falha ao ler valores do Firestore: $exception")
+            }
+    }
+
+
+    private fun addDataToFirestore(editText3: EditText, editText4: EditText) {
+        val db = FirebaseFirestore.getInstance()
+
+        val teste3Texto = editText3.text.toString();
+        val teste4Texto = editText4.text.toString().toLongOrNull()
+        // Create a new user with a first and last name
+        val user = hashMapOf(
+            "teste1" to teste3Texto ,
+            "teste2" to teste4Texto// Replace with your number value
+        )
+
+        // Add a new document with a generated ID
+        db.collection("Teste")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                println("DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                println("Error adding document: $e")
             }
     }
 
