@@ -11,6 +11,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnVoltarAtras"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:text="voltar atras">
