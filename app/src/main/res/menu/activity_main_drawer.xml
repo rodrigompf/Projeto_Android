@@ -24,5 +24,9 @@
             android:id="@+id/nav_votes"
             android:icon="@drawable/baseline_create_24"
             android:title="@string/menu_votes"/>
+        <item
+            android:id="@+id/nav_criar_votacao"
+            android:icon="@drawable/baseline_arrow_circle_up_24"
+            android:title="@string/menu_criar_votacao"/>
     </group>
 </menu>
