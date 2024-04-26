@@ -43,7 +43,6 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/botao_criar_voto"
-        android:onClick="CRIAR"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
@@ -52,6 +51,7 @@
     </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/botao_enviar_voto"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
