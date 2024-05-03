@@ -40,6 +40,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/orange"
+            android:onClick="logout"
             android:text="Logout"
             android:textSize="20dp">
         </Button>

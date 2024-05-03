@@ -28,7 +28,7 @@
             android:background="@color/white"
             android:inputType="textEmailAddress">
         </EditText>
-
+a
         <EditText
             android:id="@+id/ed_password"
             android:layout_width="300dp"

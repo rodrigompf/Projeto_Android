@@ -1,7 +1,11 @@
 package com.example.hotcue
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -12,6 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hotcue.databinding.ActivityDrawerBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class drawerActivity : AppCompatActivity() {
 
@@ -53,5 +58,18 @@ class drawerActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_drawer)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+    fun logout(view: View) {
+        Toast.makeText(this,"button", Toast.LENGTH_SHORT).show()
+        val auth = FirebaseAuth.getInstance()
+        val buttonLogout = view.findViewById<Button>(R.id.btn_logout)
+        val user = auth.currentUser
+        user.
+
+        if(user == null){
+            val intent = Intent(this,LoginActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
