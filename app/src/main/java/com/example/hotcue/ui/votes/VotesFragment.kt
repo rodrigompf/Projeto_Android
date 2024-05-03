@@ -19,4 +19,7 @@ class VotesFragment: Fragment() {
 
         return view;
     }
+
+
+
 }
