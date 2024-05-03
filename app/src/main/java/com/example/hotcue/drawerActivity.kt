@@ -64,7 +64,7 @@ class drawerActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
         val buttonLogout = view.findViewById<Button>(R.id.btn_logout)
         val user = auth.currentUser
-        user.
+        auth.signOut()
 
         if(user == null){
             val intent = Intent(this,LoginActivity::class.java)
