@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -14,6 +16,17 @@ import java.util.UUID
 
 class CriarVotacaoFragment: Fragment() {
     private val db = FirebaseFirestore.getInstance()
+    data class Vote(
+        val vtFinalizada: Boolean,
+        val vtIdentificacao: String,
+        val vtTipo: String,
+        val vtUtilizador: String,
+        val vtVotos: Char
+    )
+    data class Votecampos(
+        val vt_campo:String
+
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,57 +57,88 @@ class CriarVotacaoFragment: Fragment() {
             //linear_receber_voto.addView(templateQuadradoVotacaoAberta)
        // }
 
+        botao_enviar_voto.setOnLongClickListener{
+            addVoteToFirestore()
+        }
     }
 
-    private fun criarVotacao() {
-        // Coleta os dados dos campos preenchidos pelo usuário
-        val vt_data_fim = Date() // Aqui você obteria a data final da votação, por exemplo
-        val vt_data_inicio = Date() // Aqui você obteria a data de início da votação, por exemplo
-        val vt_finalizado = false // Aqui você obteria o estado da votação (se está finalizada ou não), por exemplo
-        val vt_identificacao = "Identificação da votação" // Aqui você obteria a identificação da votação, por exemplo
-        val vt_tipo = "Tipo da votação" // Aqui você obteria o tipo da votação, por exemplo
-        val vt_utilizador = "Utilizador responsável" // Aqui você obteria o utilizador responsável pela votação, por exemplo
-        val vt_votos = "Votos da votação" // Aqui você obteria os votos da votação, por exemplo
 
-        // Gere um identificador único para a votação
-        val votacaoId = UUID.randomUUID().toString()
 
-        // Crie um mapa de dados com os dados da votação
-        val votacaoData = hashMapOf(
-            "vt_data_fim" to vt_data_fim,
-            "vt_data_inicio" to vt_data_inicio,
-            "vt_finalizado" to vt_finalizado,
-            "vt_identificacao" to vt_identificacao,
-            "vt_tipo" to vt_tipo,
-            "vt_utilizador" to vt_utilizador,
-            "vt_votos" to vt_votos
-        )
 
-        // Supondo que você tenha uma lista de campos de votação e seus valores
-        val camposVotacao = hashMapOf<String, Any>(
-            "campo1" to "valor1",
-            "campo2" to "valor2",
-            // Adicione os campos de votação conforme necessário
-        )
+     fun adicionar_votacao(){
 
-        // Adicione os dados dos campos de votação ao mapa de dados da votação
-        val votacaoComCampos = HashMap<String, Any>()
-        votacaoComCampos.putAll(votacaoData)
-        votacaoComCampos.putAll(camposVotacao)
+                // Example vote
+                val vote = Vote(
+                    vtFinalizada = false,
+                    vtIdentificacao = "Some identification",
+                    vtTipo = "Some type",
+                    vtUtilizador = "User ID",
+                    vtVotos = 'A'
+                )
+        adicionar_campos()
 
-        // Salve os dados da votação na coleção "votações" no Firestore
-        db.collection("votações")
-            .document(votacaoId)
-            .set(votacaoData)
-            .addOnSuccessListener {
-                // Votação salva com sucesso
-                println("Votação criada com sucesso!")
+
+    }
+
+    fun adicionar_campos(){
+        val linear_criar_voto = view.findViewById<LinearLayout>(R.id.linear_criar_voto)
+        for (i in 0 until linear_criar_voto.childCount) {
+            val votoView = linear_criar_voto.getChildAt(i)
+            if (votoView is LinearLayout) {
+                // Encontrar o EditText dentro do layout do voto
+                val editText = votoView.findViewById<EditText>(R.id.txt_criar_voto)
+
+                // Obter o texto do EditText
+                val textoVoto = editText.text.toString()
+
+                // Adicionar lógica aqui para fazer o que quiser com o valor do voto
+                // Por exemplo, adicionar à lista de votos ou realizar outra ação
+                val votecampo = Votecampos(
+                    vt_campo = textoVoto
+                )
+            }
+        }
+    }
+
+    fun addVoteToFirestore(vote: Vote) {
+        // Access Firestore instance
+        val db = FirebaseFirestore.getInstance()
+
+        // Add the vote to the "votacoes" collection
+        db.collection("votacoes")
+            .add(vote)
+            .addOnSuccessListener { documentReference ->
+                // Handle successful addition
+                var idaux= view.findViewById<EditText>(R.id.idAux)
+                val cenascoisaas :String =(documentReference.id)
+
+               idaux = cenascoisaas.toString()
+                addVotecamposToFirestore(idaux: String)
             }
             .addOnFailureListener { e ->
-                // Ocorreu um erro ao salvar a votação
-                println("Erro ao criar a votação: $e")
+                // Handle errors
+                println("Error adding vote: $e")
             }
     }
+    fun addVotecamposToFirestore(votecampos: Votecampos) {
+        // Access Firestore instance
+        val db = FirebaseFirestore.getInstance()
+
+        // Add the vote to the "votacoes" collection
+        db.collection("campos_votacao")
+            .add(votecampos)
+            .addOnSuccessListener { documentReference ->
+                // Handle successful addition
+                println("Vote added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                // Handle errors
+                println("Error adding vote: $e")
+            }
+    }
+
+
+
 }
 
 
