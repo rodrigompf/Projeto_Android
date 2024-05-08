@@ -59,16 +59,22 @@ class RegisterActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
 
-                        Toast.makeText(baseContext, "Conta criada", Toast.LENGTH_SHORT,).show()
-
+                        auth.currentUser?.sendEmailVerification()?.addOnCompleteListener(this@RegisterActivity) { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(baseContext, "User registado, por favor verifique o seu email para dar login", Toast.LENGTH_SHORT,).show()
+                            }
+                            else{
+                                Toast.makeText(baseContext, "Falha no registo", Toast.LENGTH_SHORT,).show()
+                            }
+                        }
                     } else {
-                        Toast.makeText(baseContext, "Autenticação falhada", Toast.LENGTH_SHORT,).show()
+                        Toast.makeText(baseContext, "Falha no registo", Toast.LENGTH_SHORT,).show()
                     }
                 }
 
 
+
+
         }
-
-
     }
 }

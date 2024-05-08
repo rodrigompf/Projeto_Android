@@ -61,12 +61,20 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        Toast.makeText(baseContext, "Login efetuado com sucesso", Toast.LENGTH_SHORT,).show()
-                        val intent = Intent(applicationContext, HomeFragment::class.java)
-                        startActivity(intent)
-                        finish()
+                        if (auth.currentUser?.isEmailVerified == true) {
+                            Toast.makeText(
+                                baseContext,
+                                "Login efetuado com sucesso",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            val intent = Intent(applicationContext, HomeFragment::class.java)
+                            startActivity(intent)
+                            finish()
+                        }else{
+                            Toast.makeText(baseContext, "Por favor verifique o seu email primeiro", Toast.LENGTH_SHORT,).show()
+                        }
                     } else {
-                        Toast.makeText(baseContext, "Autenticação falhada", Toast.LENGTH_SHORT,).show()
+                        Toast.makeText(baseContext, "Falha na autenticação", Toast.LENGTH_SHORT,).show()
                     }
                 }
         }
