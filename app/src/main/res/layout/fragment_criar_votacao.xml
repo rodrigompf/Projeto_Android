@@ -50,14 +50,6 @@
         android:background="@drawable/baseline_arrow_forward_24">
     </androidx.appcompat.widget.AppCompatButton>
 
-    <EditText
-        android:id="@+id/idAux"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/botao_enviar_voto"
         android:layout_width="300dp"
