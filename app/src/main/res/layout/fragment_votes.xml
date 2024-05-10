@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/megaChillBlack">
 
         <EditText
             android:layout_width="200dp"
@@ -17,7 +18,8 @@
             android:layout_gravity="center"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:background="@color/orange">
         </EditText>
 
         <LinearLayout
@@ -26,7 +28,8 @@
             android:layout_height="400dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/chillOrange">
         </LinearLayout>
 
         <TextView
@@ -38,7 +41,8 @@
             android:layout_gravity="end"
             android:gravity="center"
             android:layout_marginTop="120dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginEnd="30dp"
+            android:background="@color/orange">
         </TextView>
 
 

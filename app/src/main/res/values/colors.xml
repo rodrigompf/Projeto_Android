@@ -2,9 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="chillBlack">#151515</color>
+    <color name="megaChillBlack">#272626</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bege">#CCC3A4</color>
     <color name="red">#FF0000</color>
     <color name="orange">#EF6000</color>
+    <color name="chillOrange">#FA9957</color>
 
 </resources>

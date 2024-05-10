@@ -8,13 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/border1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:backgroundTint="@color/megaChillBlack">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnVoltarAtras"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:text="voltar atras">
+            android:text="voltar atras"
+            android:backgroundTint="@color/orange">
         </androidx.appcompat.widget.AppCompatButton>
 
         <ImageView
@@ -29,7 +31,8 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="timer do tempo restante">
+            android:text="timer do tempo restante"
+            android:background="@color/chillOrange">
         </TextView>
 
         <LinearLayout
@@ -37,7 +40,8 @@
             android:layout_height="300dp"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:background="@color/chillOrange">
         </LinearLayout>
 
     </LinearLayout>
