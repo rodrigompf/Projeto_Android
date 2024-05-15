@@ -33,7 +33,7 @@
         android:id="@+id/nav_votes"
         android:name="com.example.hotcue.ui.votes.VotesFragment"
         android:label="@string/menu_votes"
-        tools:layout="@layout/fragment_votes" />
+        tools:layout="@layout/fragment_votesfilme" />
     <fragment
         android:id="@+id/nav_criar_votacao"
         android:name="com.example.hotcue.ui.criarVotacao.CriarVotacaoFragment"

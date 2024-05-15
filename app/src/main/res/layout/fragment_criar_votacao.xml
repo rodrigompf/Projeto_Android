@@ -45,9 +45,15 @@
         <EditText
             android:id="@+id/textView"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:gravity="center"
-            android:layout_height="match_parent"
             android:hint="descrição" />
+        <EditText
+            android:id="@+id/Timer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:hint="Set The Timer in hours" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -67,6 +73,7 @@
         android:layout_marginTop="250dp"
         android:background="@drawable/baseline_arrow_forward_24"
         android:onClick="cena"
+
         >
     </androidx.appcompat.widget.AppCompatButton>
 
