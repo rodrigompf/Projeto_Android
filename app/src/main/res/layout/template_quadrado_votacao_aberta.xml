@@ -7,60 +7,62 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/chillOrange"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/retangle"
             android:layout_width="300dp"
             android:layout_height="120dp"
-            android:orientation="horizontal"
             android:background="@drawable/border1"
-            android:id="@+id/retangle"
-            >
+            android:orientation="horizontal"
+            android:backgroundTint="@color/orange">
 
 
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="10dp"
-
                 android:layout_marginTop="10dp">
             </ImageView>
 
             <LinearLayout
+                android:id="@+id/Square"
                 android:layout_width="170dp"
                 android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/Square"
-                android:background="@drawable/border1">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border1"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/Titulo.get"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:background="@drawable/border1"
                     android:hint="titulo votaçao"
-                    android:id="@+id/Titulo.get"
-                    android:background="@drawable/border1">
+                    android:textAlignment="center">
                 </TextView>
 
                 <LinearLayout
+                    android:id="@+id/horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/horizontal"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="85dp"
-                        android:layout_height="50dp"
                         android:id="@+id/Votos.get"
-                        android:hint="votos ja dados">
-                    </TextView>
-                    <TextView
                         android:layout_width="85dp"
                         android:layout_height="50dp"
+                        android:hint="votos ja dados"
+                        android:textAlignment="center">
+                    </TextView>
+
+                    <TextView
                         android:id="@+id/Timer.get"
-                        android:text="tempo para acabar">
+                        android:layout_width="85dp"
+                        android:layout_height="50dp"
+                        android:hint="tempo para acabar"
+                        android:textAlignment="center">
                     </TextView>
                 </LinearLayout>
 

@@ -108,51 +108,6 @@ class CriarVotacaoFragment : Fragment() {
     }
 }
 
-/*data class Vote(
-        val vtFinalizada: Boolean,
-        val vtIdentificacao = textView
-        val vtTipo: String,
-        val vtUtilizador: String,
-        val vtVotos: Char
-
-        data class Votecampos(
-        val vt_campo: String
-    )
-
-    fun adicionarVotacao() {
-        val linearCriarVoto = requireView().findViewById<LinearLayout>(R.id.linear_criar_voto)
-        for (i in 0 until linearCriarVoto.childCount) {
-            val votoView = linearCriarVoto.getChildAt(i)
-            if (votoView is LinearLayout) {
-                val editText = votoView.findViewById<EditText>(R.id.txt_criar_voto)
-                val textoVoto = editText.text.toString().trim()
-                addVoteToFirestore(textoVoto)
-            }
-        }
-    }
-
-    fun addVoteToFirestore(textoVoto: String) {
-        val vote = hashMapOf(
-            "vtFinalizada" to false,
-            "vtIdentificacao" to stextView ,
-            "vtTipo" to "",
-            "vtUtilizador" to "",
-            "vtVotos" to ""
-        )
-
-        db.collection("votacoes")
-            .add(vote)
-            .addOnSuccessListener { documentReference ->
-            }
-            .addOnFailureListener { e ->
-            }
-    }
-
-    botaoEnviarVoto.setOnClickListener {
-            adicionarVotacao()
-        }
-    )*/
-
 
 
 

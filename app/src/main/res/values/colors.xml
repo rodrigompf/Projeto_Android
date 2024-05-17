@@ -8,5 +8,6 @@
     <color name="red">#FF0000</color>
     <color name="orange">#EF6000</color>
     <color name="chillOrange">#FA9957</color>
+    <color name="transparent">#00FFFFFF</color>
 
 </resources>
