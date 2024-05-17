@@ -53,15 +53,15 @@
             android:hint="descrição"
             android:textColorHint="@color/white"
             android:background="@drawable/roundborder2"/>
-        <EditText
-            android:layout_marginTop="20dp"
-            android:id="@+id/Timer"
+        <Spinner
+            android:id="@+id/spinner_timer"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:hint="Insira o tempo da votação"
-            android:textColorHint="@color/white"
-            android:background="@drawable/roundborder2"/>
+            android:textSize="16sp"
+            android:background="@drawable/roundborder2"
+            android:entries="@array/timer_options"/>
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

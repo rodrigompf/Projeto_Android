@@ -5,11 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import com.example.hotcue.R
@@ -18,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class CriarVotacaoFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,23 +28,23 @@ class CriarVotacaoFragment : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
-
         user?.let { currentUser ->
 
             val email = currentUser.email
 
-            val Timer = view.findViewById<EditText>(R.id.Timer)
             val etextView = view.findViewById<EditText>(R.id.textView)
-            val botaoCriarVoto = view.findViewById<AppCompatButton>(R.id.botao_criar_voto)
             val linearCriarVoto = view.findViewById<LinearLayout>(R.id.linear_criar_voto)
             val botaoEnviarVoto = view.findViewById<AppCompatButton>(R.id.botao_enviar_voto)
             val Titulo = view.findViewById<EditText>(R.id.Titulo)
             val spinnerTipoVotacao = view.findViewById<Spinner>(R.id.spinner_tipo_votacao)
-            botaoCriarVoto.setOnClickListener {
-                val templateCriarVoto = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.template_criar_voto, null, false)
-                linearCriarVoto.addView(templateCriarVoto)
-            }
+            val spinnerTimer = view.findViewById<Spinner>(R.id.spinner_timer)
+
+            // Configure Spinner for Timer
+            val timerValues = arrayOf("15", "30", "45", "1", "2", "4")
+            val timerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timerValues)
+            timerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerTimer.adapter = timerAdapter
+
             // Configurar um listener para o Spinner
             spinnerTipoVotacao.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
@@ -70,8 +65,7 @@ class CriarVotacaoFragment : Fragment() {
                 val stextView = etextView.text.toString().trim()
                 val currentSpinnerValue = spinnerTipoVotacao.selectedItem.toString()
                 val eTitulo = Titulo.text.toString().trim()
-                val eTimer = Timer.text.toString().trim()
-                val timerValue = eTimer.toIntOrNull() ?: 0 // Convert timer value to Int, default to 0 if conversion fails
+                val eTimer = spinnerTimer.selectedItem.toString().trim().toIntOrNull() ?: 0 // Convert timer value to Int, default to 0 if conversion fails
 
                 // Get the current count of documents
                 db.collection("votacoes")
@@ -84,7 +78,7 @@ class CriarVotacaoFragment : Fragment() {
                             "Titulo" to eTitulo,
                             "Utilizador" to email,
                             "Votos" to 0,
-                            "Timer" to timerValue
+                            "Timer" to eTimer
                         )
 
                         // Set the document with an incremented identifier
@@ -94,7 +88,6 @@ class CriarVotacaoFragment : Fragment() {
                             .addOnSuccessListener {
                                 etextView.text.clear()
                                 Titulo.text.clear()
-                                Timer.text.clear()
                             }
                             .addOnFailureListener { exception ->
                                 // Handle failure
