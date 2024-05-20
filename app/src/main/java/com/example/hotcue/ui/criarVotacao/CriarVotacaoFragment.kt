@@ -33,48 +33,36 @@ class CriarVotacaoFragment : Fragment() {
             val email = currentUser.email
 
             val etextView = view.findViewById<EditText>(R.id.textView)
-            val linearCriarVoto = view.findViewById<LinearLayout>(R.id.linear_criar_voto)
             val botaoEnviarVoto = view.findViewById<AppCompatButton>(R.id.botao_enviar_voto)
             val Titulo = view.findViewById<EditText>(R.id.Titulo)
             val spinnerTipoVotacao = view.findViewById<Spinner>(R.id.spinner_tipo_votacao)
             val spinnerTimer = view.findViewById<Spinner>(R.id.spinner_timer)
 
             // Configure Spinner for Timer
-            val timerValues = arrayOf("15", "30", "45", "1", "2", "4")
+            val timerValues = arrayOf("15min", "30min", "45min", "60min", "120min", "180min")
             val timerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timerValues)
             timerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerTimer.adapter = timerAdapter
 
-            // Configurar um listener para o Spinner
-            spinnerTipoVotacao.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val selectedItem = parent?.getItemAtPosition(position).toString()
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
-                }
+            // Configure Spinner for Tipo Votacao
+            val tipoVotacaoValues = arrayOf("Filmes", "Jogos", "Musica", "Outros")
+            val tipoVotacaoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, tipoVotacaoValues)
+            tipoVotacaoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerTipoVotacao.adapter = tipoVotacaoAdapter
 
             botaoEnviarVoto.setOnClickListener {
                 val stextView = etextView.text.toString().trim()
-                val currentSpinnerValue = spinnerTipoVotacao.selectedItem.toString()
                 val eTitulo = Titulo.text.toString().trim()
                 val eTimer = spinnerTimer.selectedItem.toString().trim().toIntOrNull() ?: 0 // Convert timer value to Int, default to 0 if conversion fails
+                val tipoVotacao = spinnerTipoVotacao.selectedItem.toString().trim() // Get the selected type
 
-                // Get the current count of documents
-                db.collection("votacoes")
+                // Get the current count of documents in the selected type collection
+                db.collection("votacoes").document(tipoVotacao).collection("items")
                     .get()
                     .addOnSuccessListener { result ->
                         val documentCount = result.size() // Count of existing documents
                         val userMap = hashMapOf(
                             "Descrição" to stextView,
-                            "Identificador" to currentSpinnerValue,
                             "Titulo" to eTitulo,
                             "Utilizador" to email,
                             "Votos" to 0,
@@ -82,19 +70,24 @@ class CriarVotacaoFragment : Fragment() {
                         )
 
                         // Set the document with an incremented identifier
-                        db.collection("votacoes")
+                        db.collection("votacoes").document(tipoVotacao).collection("items")
                             .document((documentCount + 1).toString()) // Assigning a unique number
                             .set(userMap)
                             .addOnSuccessListener {
                                 etextView.text.clear()
                                 Titulo.text.clear()
+                                Toast.makeText(requireContext(), "Votação criada com sucesso!", Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener { exception ->
                                 // Handle failure
+                                Log.e("CriarVotacaoFragment", "Error saving document", exception)
+                                Toast.makeText(requireContext(), "Erro ao criar votação", Toast.LENGTH_SHORT).show()
                             }
                     }
                     .addOnFailureListener { exception ->
                         // Handle failure
+                        Log.e("CriarVotacaoFragment", "Error getting documents", exception)
+                        Toast.makeText(requireContext(), "Erro ao buscar documentos", Toast.LENGTH_SHORT).show()
                     }
             }
         }

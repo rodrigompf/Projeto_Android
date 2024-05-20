@@ -37,11 +37,12 @@ class VotesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        orientacaoVotos = arrayListOf()
-
+        orientacaoVotos = ArrayList()
         adapter = Adapter(orientacaoVotos)
+        recyclerView.adapter = adapter
 
-        recyclerView.adapter =adapter
+        // Initialize Firestore here
+        db = FirebaseFirestore.getInstance()
 
         EventChangeListener()
 
@@ -49,23 +50,25 @@ class VotesFragment : Fragment() {
     }
 
     private fun EventChangeListener() {
-        db = FirebaseFirestore.getInstance()
-        db.collection("votacoes").addSnapshotListener { value, error ->
-            if (error != null) {
-                Log.e("Firestore error", error.message.toString())
-                return@addSnapshotListener
-            }
+        db.collection("votacoes")
+            .document("Filmes") // Assuming "Filmes" is a document, change this according to your Firestore structure
+            .collection("items")
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.e("Firestore error", error.message.toString())
+                    // Handle error, if needed
+                    return@addSnapshotListener
+                }
 
-            value?.let { snapshot ->
-                for (dc in snapshot.documentChanges) {
-                    if (dc.type == DocumentChange.Type.ADDED) {
-                        val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
-                        orientacaoVotos.add(orientacaoVoto)
-                        adapter.notifyItemInserted(orientacaoVotos.size - 5)
+                value?.let { snapshot ->
+                    for (dc in snapshot.documentChanges) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
+                            orientacaoVotos.add(orientacaoVoto)
+                            adapter.notifyDataSetChanged()
+                        }
                     }
                 }
             }
-        }
     }
-
 }
