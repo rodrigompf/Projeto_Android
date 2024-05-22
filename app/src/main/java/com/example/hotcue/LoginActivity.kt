@@ -14,16 +14,25 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var auth:FirebaseAuth
-
+    lateinit var auth: FirebaseAuth
 
     override fun onStart() {
         super.onStart()
+        auth = FirebaseAuth.getInstance() // Initialize FirebaseAuth instance
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val intent = Intent(applicationContext, drawerActivity::class.java)
-            startActivity(intent)
-            finish()
+            currentUser.reload().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (currentUser.isEmailVerified) {
+                        val intent = Intent(applicationContext, drawerActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Por favor, verifique seu email para continuar", Toast.LENGTH_SHORT).show()
+                        auth.signOut() // Sign out the user if email is not verified
+                    }
+                }
+            }
         }
     }
 
@@ -38,7 +47,6 @@ class LoginActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val textView = findViewById<TextView>(R.id.registerClique)
 
-
         textView.setOnClickListener {
             val intent = Intent(applicationContext, RegisterActivity::class.java)
             startActivity(intent)
@@ -52,29 +60,33 @@ class LoginActivity : AppCompatActivity() {
 
             if (email.isEmpty()) {
                 Toast.makeText(this, "introduza um email", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.GONE
+                return@setOnClickListener
             }
             if (password.isEmpty()) {
                 Toast.makeText(this, "introduza uma password", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.GONE
+                return@setOnClickListener
             }
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        if (auth.currentUser?.isEmailVerified == true) {
-                            Toast.makeText(
-                                baseContext,
-                                "Login efetuado com sucesso",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                            val intent = Intent(applicationContext, HomeFragment::class.java)
-                            startActivity(intent)
-                            finish()
-                        }else{
-                            Toast.makeText(baseContext, "Por favor verifique o seu email primeiro", Toast.LENGTH_SHORT,).show()
+                        val currentUser = auth.currentUser
+                        currentUser?.reload()?.addOnCompleteListener { reloadTask ->
+                            if (reloadTask.isSuccessful && currentUser.isEmailVerified) {
+                                Toast.makeText(baseContext, "Login efetuado com sucesso", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(applicationContext, drawerActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(baseContext, "Por favor, verifique seu email para continuar", Toast.LENGTH_SHORT).show()
+                                auth.signOut()
+                            }
                         }
                     } else {
-                        Toast.makeText(baseContext, "Falha na autenticação", Toast.LENGTH_SHORT,).show()
+                        Toast.makeText(baseContext, "Falha na autenticação", Toast.LENGTH_SHORT).show()
                     }
                 }
         }

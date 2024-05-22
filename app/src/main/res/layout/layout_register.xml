@@ -30,15 +30,25 @@
         </EditText>
 
         <EditText
-            android:id="@+id/ed_password2"
+            android:id="@+id/ed_user"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="50dp"
             android:layout_gravity="center"
-            android:hint="crie uma password"
+            android:hint="Insira o seu Username"
             android:background="@color/white"
-            android:inputType="textPassword">
+            android:inputType="textEmailAddress">
         </EditText>
+
+        <EditText
+            android:id="@+id/ed_password2"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@color/white"
+            android:hint="crie uma password"
+            android:inputType="textPassword"></EditText>
 
         <ProgressBar
             android:layout_width="wrap_content"
