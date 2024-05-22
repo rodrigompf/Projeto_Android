@@ -1,42 +1,74 @@
-package com.example.hotcue.ui.slideshow
+package com.example.hotcue.ui.votes
 
+import android.media.session.MediaSessionManager.OnMediaKeyEventSessionChangedListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.hotcue.databinding.FragmentSlideshowBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hotcue.Adapter // Assuming Adapter is a custom adapter class
+import com.example.hotcue.OrientacaoVotos
+import com.example.hotcue.R
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.toObject
+
 
 class SlideshowFragment : Fragment() {
-
-    private var _binding: FragmentSlideshowBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: Adapter
+    private lateinit var db: FirebaseFirestore
+    private lateinit var orientacaoVotos: ArrayList<OrientacaoVotos>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_votesfilme, container, false)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        recyclerView = view.findViewById(R.id.recyclar)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
 
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        orientacaoVotos = ArrayList()
+        adapter = Adapter(orientacaoVotos)
+        recyclerView.adapter = adapter
+
+        // Initialize Firestore here
+        db = FirebaseFirestore.getInstance()
+
+        EventChangeListener()
+
+        return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun EventChangeListener() {
+        db.collection("votacoes")
+            .document("Jogos") // Assuming "Filmes" is a document, change this according to your Firestore structure
+            .collection("items")
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.e("Firestore error", error.message.toString())
+                    // Handle error, if needed
+                    return@addSnapshotListener
+                }
+
+                value?.let { snapshot ->
+                    for (dc in snapshot.documentChanges) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
+                            orientacaoVotos.add(orientacaoVoto)
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
     }
 }
