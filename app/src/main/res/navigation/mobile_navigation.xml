@@ -12,18 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.hotcue.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.hotcue.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.hotcue.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
@@ -34,6 +22,31 @@
         android:name="com.example.hotcue.ui.votes.VotesFragment"
         android:label="@string/menu_votes"
         tools:layout="@layout/fragment_votesfilme" />
+
+    <fragment
+        android:id="@+id/nav_filmes"
+        android:name="com.example.hotcue.ui.filmes.FilmesFragment"
+        android:label="@string/menu_filmes"
+        tools:layout="@layout/fragment_filmes" />
+
+    <fragment
+        android:id="@+id/nav_jogos"
+        android:name="com.example.hotcue.ui.jogos.JogosFragment"
+        android:label="@string/menu_jogos"
+        tools:layout="@layout/fragment_jogos" />
+
+    <fragment
+        android:id="@+id/nav_musicas"
+        android:name="com.example.hotcue.ui.musicas.MusicasFragment"
+        android:label="@string/menu_musicas"
+        tools:layout="@layout/fragment_musicas" />
+
+    <fragment
+        android:id="@+id/nav_outros"
+        android:name="com.example.hotcue.ui.outros.OutrosFragment"
+        android:label="@string/menu_outros"
+        tools:layout="@layout/fragment_outros" />
+
     <fragment
         android:id="@+id/nav_criar_votacao"
         android:name="com.example.hotcue.ui.criarVotacao.CriarVotacaoFragment"

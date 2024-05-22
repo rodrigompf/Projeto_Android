@@ -11,10 +11,12 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_jogos">Jogos</string>
+    <string name="menu_outros">Outros</string>
+    <string name="menu_musicas">Musicas</string>
     <string name="menu_votes">Votes</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_filmes">Filmes</string>
     <string name="menu_criar_votacao">CriarVotacao</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
