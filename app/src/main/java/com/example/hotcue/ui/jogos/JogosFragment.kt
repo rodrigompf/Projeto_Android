@@ -1,5 +1,6 @@
 package com.example.hotcue.ui.jogos
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,12 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hotcue.Adapter
+import com.example.hotcue.AntesVotarActivity
 import com.example.hotcue.OrientacaoVotos
 import com.example.hotcue.R
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 
-class JogosFragment: Fragment() {
+class JogosFragment: Fragment(), Adapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: Adapter
     private lateinit var db: FirebaseFirestore
@@ -25,14 +27,14 @@ class JogosFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_votesfilme, container, false)
+        val view = inflater.inflate(R.layout.fragment_jogos, container, false)
 
         recyclerView = view.findViewById(R.id.recyclar)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         orientacaoVotos = ArrayList()
-        adapter = Adapter(orientacaoVotos)
+        adapter = Adapter(orientacaoVotos,this)
         recyclerView.adapter = adapter
 
         // Initialize Firestore here
@@ -45,7 +47,7 @@ class JogosFragment: Fragment() {
 
     private fun EventChangeListener() {
         db.collection("votacoes")
-            .document("Jogos") // Assuming "Filmes" is a document, change this according to your Firestore structure
+            .document("Jogosw") // Assuming "Filmes" is a document, change this according to your Firestore structure
             .collection("items")
             .addSnapshotListener { value, error ->
                 if (error != null) {
@@ -64,5 +66,14 @@ class JogosFragment: Fragment() {
                     }
                 }
             }
+    }
+    override fun onItemClick(orientacaoVoto: OrientacaoVotos) {
+        // Create an Intent to start AntesVotarActivity
+        val intent = Intent(requireContext(), AntesVotarActivity::class.java).apply {
+            // Pass selected item data to AntesVotarActivity
+            putExtra("selectedItem", orientacaoVoto)
+        }
+        // Start the activity if the context is not null
+        requireContext().startActivity(intent)
     }
 }
