@@ -59,6 +59,10 @@ class OutrosFragment : Fragment(), Adapter.OnItemClickListener {
                     for (dc in snapshot.documentChanges) {
                         if (dc.type == DocumentChange.Type.ADDED) {
                             val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
+                            val title = orientacaoVoto.Titulo
+                            val description = orientacaoVoto.Descrição
+                            val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
+                            Log.d("Firestore", "Titulo: $title, Descricao: $description, Timer: $timer")
                             orientacaoVotos.add(orientacaoVoto)
                             adapter.notifyDataSetChanged()
                         }
@@ -68,11 +72,18 @@ class OutrosFragment : Fragment(), Adapter.OnItemClickListener {
     }
 
     override fun onItemClick(orientacaoVoto: OrientacaoVotos) {
-        // Create an Intent to start AntesVotarActivity
+        // Retrieve the title, description, and timer of the selected item
+        val title = orientacaoVoto.Titulo
+        val description = orientacaoVoto.Descrição
+        val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
+
+        // Create an Intent to start AntesVotarActivity and pass the data as extras
         val intent = Intent(requireContext(), AntesVotarActivity::class.java).apply {
-            // Pass selected item data to AntesVotarActivity
-            putExtra("selectedItem", orientacaoVoto)
+            putExtra("title", title)
+            putExtra("description", description)
+            putExtra("timer", timer) // Pass the timer data as an extra
         }
+
         // Start the activity if the context is not null
         requireContext().startActivity(intent)
     }

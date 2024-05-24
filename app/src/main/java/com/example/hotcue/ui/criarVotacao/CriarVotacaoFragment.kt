@@ -26,9 +26,9 @@ class CriarVotacaoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
+        val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
 
-        currentUser?.let { user ->
+        currentUserEmail?.let { email ->
 
             val etextView = view.findViewById<EditText>(R.id.textView)
             val botaoEnviarVoto = view.findViewById<AppCompatButton>(R.id.botao_enviar_voto)
@@ -38,71 +38,83 @@ class CriarVotacaoFragment : Fragment() {
 
             // Configure Spinner for Timer
             val timerValues = arrayOf("15", "30", "45", "60", "120", "180")
-            val timerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timerValues)
+            val timerAdapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timerValues)
             timerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerTimer.adapter = timerAdapter
 
             // Configure Spinner for Tipo Votacao
             val tipoVotacaoValues = arrayOf("Filmes", "Jogos", "Musica", "Outros")
-            val tipoVotacaoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, tipoVotacaoValues)
+            val tipoVotacaoAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                tipoVotacaoValues
+            )
             tipoVotacaoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerTipoVotacao.adapter = tipoVotacaoAdapter
 
             botaoEnviarVoto.setOnClickListener {
                 val stextView = etextView.text.toString().trim()
-                val eTitulo = Titulo.text.toString().trim()
-                val eTimer = spinnerTimer.selectedItem.toString().trim().toIntOrNull() ?: 0 // Convert timer value to Int, default to 0 if conversion fails
-                val tipoVotacao = spinnerTipoVotacao.selectedItem.toString().trim() // Get the selected type
+                val eTitulo = Titulo.text.toString().trim() // Trim whitespace from title
+                val eTimer = spinnerTimer.selectedItem.toString().trim().toIntOrNull()
+                    ?: 0 // Convert timer value to Int, default to 0 if conversion fails
+                val tipoVotacao =
+                    spinnerTipoVotacao.selectedItem.toString().trim() // Get the selected type
 
-                // Query the "utilizadores" collection to find the document with the current user's email
-                db.collection("utilizadores")
-                    .whereEqualTo("email", user.email) // Assuming "email" is the field storing the user's email
+                val userMap = hashMapOf(
+                    "Descrição" to stextView,
+                    "Titulo" to eTitulo,
+                    "UtilizadorEmail" to email, // Saving user's email instead of username
+                    "Votos" to 0,
+                    "Timer" to eTimer
+                )
+
+                // Get the current count of documents in the selected type collection
+                db.collection("votacoes").document(tipoVotacao).collection("items")
                     .get()
-                    .addOnSuccessListener { userResult ->
-                        if (!userResult.isEmpty) {
-                            val username = userResult.documents[0].getString("username") ?: ""
-                            val userMap = hashMapOf(
-                                "Descrição" to stextView,
-                                "Titulo" to eTitulo,
-                                "Utilizador" to username,
-                                "Votos" to 0,
-                                "Timer" to eTimer
-                            )
+                    .addOnSuccessListener { result ->
+                        val documentCount = result.size() // Count of existing documents
 
-                            // Get the current count of documents in the selected type collection
-                            db.collection("votacoes").document(tipoVotacao).collection("items")
-                                .get()
-                                .addOnSuccessListener { result ->
-                                    val documentCount = result.size() // Count of existing documents
-
-                                    // Set the document with an incremented identifier
-                                    db.collection("votacoes").document(tipoVotacao).collection("items")
-                                        .document((documentCount + 1).toString()) // Assigning a unique number
-                                        .set(userMap)
-                                        .addOnSuccessListener {
-                                            etextView.text.clear()
-                                            Titulo.text.clear()
-                                            Toast.makeText(requireContext(), "Votação criada com sucesso!", Toast.LENGTH_SHORT).show()
-                                        }
-                                        .addOnFailureListener { exception ->
-                                            // Handle failure
-                                            Log.e("CriarVotacaoFragment", "Error saving document", exception)
-                                            Toast.makeText(requireContext(), "Erro ao criar votação", Toast.LENGTH_SHORT).show()
-                                        }
-                                }
-                                .addOnFailureListener { exception ->
-                                    // Handle failure
-                                    Log.e("CriarVotacaoFragment", "Error getting documents", exception)
-                                    Toast.makeText(requireContext(), "Erro ao buscar documentos", Toast.LENGTH_SHORT).show()
-                                }
-                        } else {
-                            Toast.makeText(requireContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show()
-                        }
+                        // Set the document with an incremented identifier
+                        db.collection("votacoes").document(tipoVotacao)
+                            .collection("items")
+                            .document((documentCount + 1).toString()) // Assigning a unique number
+                            .set(userMap)
+                            .addOnSuccessListener {
+                                etextView.text.clear()
+                                Titulo.text.clear()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Votação criada com sucesso!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            .addOnFailureListener { exception ->
+                                // Handle failure
+                                Log.e(
+                                    "CriarVotacaoFragment",
+                                    "Error saving document",
+                                    exception
+                                )
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Erro ao criar votação",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                     }
                     .addOnFailureListener { exception ->
                         // Handle failure
-                        Log.e("CriarVotacaoFragment", "Error getting user document", exception)
-                        Toast.makeText(requireContext(), "Erro ao buscar usuário", Toast.LENGTH_SHORT).show()
+                        Log.e(
+                            "CriarVotacaoFragment",
+                            "Error getting documents",
+                            exception
+                        )
+                        Toast.makeText(
+                            requireContext(),
+                            "Erro ao buscar documentos",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
             }
         }

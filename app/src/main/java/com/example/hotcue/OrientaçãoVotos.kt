@@ -3,13 +3,14 @@ package com.example.hotcue
 
 import android.os.Parcel
 import android.os.Parcelable
-
 data class OrientacaoVotos(
     var Titulo: String? = null,
+    var Descrição: String? = null,
     var Votos: Int? = null,
     var Timer: Long? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Long::class.java.classLoader) as? Long
@@ -17,6 +18,7 @@ data class OrientacaoVotos(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(Titulo)
+        parcel.writeString(Descrição)
         parcel.writeValue(Votos)
         parcel.writeValue(Timer)
     }
