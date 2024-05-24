@@ -60,7 +60,7 @@ class CriarVotacaoFragment : Fragment() {
                     .get()
                     .addOnSuccessListener { userResult ->
                         if (!userResult.isEmpty) {
-                            val username = userResult.documents[0].getString("username") // Assuming "username" is the field storing the username
+                            val username = userResult.documents[0].getString("username") ?: ""
                             val userMap = hashMapOf(
                                 "Descrição" to stextView,
                                 "Titulo" to eTitulo,
