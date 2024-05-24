@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/gradient1">
+    android:background="@drawable/gradientorange">
 
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
