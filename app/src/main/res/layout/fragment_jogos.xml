@@ -12,33 +12,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/megaChillBlack">
+            android:background="@drawable/gradientgreen">
 
             <EditText
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:hint="pesquise"
-                android:textColorHint="@color/black"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:textSize="25sp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:layout_marginTop="30dp"
-                android:background="@color/orange"/>
+                android:background="#165314"/>
 
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:hint="Jogos"
-                android:textColorHint="@color/black"
-                android:textColor="@color/black"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:textSize="25sp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
-                android:background="@color/orange"/>
+                android:background="#165314"/>
 
             <!-- RecyclerView added here -->
             <androidx.recyclerview.widget.RecyclerView
@@ -49,20 +49,20 @@
                 android:layout_gravity="center"
                 android:foregroundGravity="fill"
                 android:orientation="vertical"
-                android:background="@color/chillOrange"
+                android:background="#65C643"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:layout_gravity="end"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="30dp"
-                android:background="@color/orange"/>
+                android:background="#165314"/>
         </LinearLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -18,12 +18,6 @@
         tools:layout="@layout/fragment_settings" />
 
     <fragment
-        android:id="@+id/nav_votes"
-        android:name="com.example.hotcue.ui.votes.VotesFragment"
-        android:label="@string/menu_votes"
-        tools:layout="@layout/fragment_votesfilme" />
-
-    <fragment
         android:id="@+id/nav_filmes"
         android:name="com.example.hotcue.ui.filmes.FilmesFragment"
         android:label="@string/menu_filmes"

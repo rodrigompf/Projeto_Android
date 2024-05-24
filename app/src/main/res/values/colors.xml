@@ -9,5 +9,6 @@
     <color name="orange">#EF6000</color>
     <color name="chillOrange">#FA9957</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="gray">#494747</color>
 
 </resources>
