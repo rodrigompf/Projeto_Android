@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/retangle"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:background="@drawable/border1">
+
+
+            <LinearLayout
+                android:id="@+id/Square"
+                android:layout_width="280dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/Titulo.descrition"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:hint="titulo votaçao"
+                    android:textAlignment="center"
+                    android:background="@drawable/border1">
+                </TextView>
+
+                <LinearLayout
+                    android:id="@+id/horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/votos.item"
+                        android:layout_width="140dp"
+                        android:layout_height="40dp"
+                        android:hint="votos ja dados"
+                        android:textAlignment="center">
+                    </TextView>
+
+                    <Button
+                        android:id="@+id/button.votes"
+                        android:layout_width="140dp"
+                        android:layout_height="40dp"
+                        android:hint="tempo para acabar"
+                        android:textAlignment="center">
+                    </Button>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

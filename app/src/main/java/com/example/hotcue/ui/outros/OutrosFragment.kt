@@ -54,20 +54,19 @@ class OutrosFragment : Fragment(), Adapter.OnItemClickListener {
                     Log.e("Firestore error", error.message.toString())
                     return@addSnapshotListener
                 }
+                for (dc in value!!.documentChanges) {
+                    if (dc.type == DocumentChange.Type.ADDED) {
+                        val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
+                        orientacaoVoto.id = dc.document.id // Store the document ID
+                        orientacaoVotos.add(orientacaoVoto)
 
-                value?.let { snapshot ->
-                    for (dc in snapshot.documentChanges) {
-                        if (dc.type == DocumentChange.Type.ADDED) {
-                            val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
-                            val title = orientacaoVoto.Titulo
-                            val description = orientacaoVoto.Descrição
-                            val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
-                            Log.d("Firestore", "Titulo: $title, Descricao: $description, Timer: $timer")
-                            orientacaoVotos.add(orientacaoVoto)
-                            adapter.notifyDataSetChanged()
-                        }
+                        val title = orientacaoVoto.Titulo
+                        val description = orientacaoVoto.Descrição
+                        val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
+                        Log.d("Firestore", "Titulo: $title, Descricao: $description, Timer: $timer")
                     }
                 }
+                adapter.notifyDataSetChanged()
             }
     }
 
@@ -81,7 +80,8 @@ class OutrosFragment : Fragment(), Adapter.OnItemClickListener {
         val intent = Intent(requireContext(), AntesVotarActivity::class.java).apply {
             putExtra("title", title)
             putExtra("description", description)
-            putExtra("timer", timer) // Pass the timer data as an extra
+            putExtra("timer", timer)
+            putExtra("id", orientacaoVoto.id)
         }
 
         // Start the activity if the context is not null

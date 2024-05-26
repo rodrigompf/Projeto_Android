@@ -34,11 +34,11 @@ class FilmesFragment: Fragment(), Adapter.OnItemClickListener {
         recyclerView.setHasFixedSize(true)
 
         orientacaoVotos = ArrayList()
-        adapter = Adapter(orientacaoVotos,this)
+        adapter = Adapter(orientacaoVotos, this)
         recyclerView.adapter = adapter
 
-        // Initialize Firestore here
         db = FirebaseFirestore.getInstance()
+
 
         EventChangeListener()
 
@@ -47,35 +47,44 @@ class FilmesFragment: Fragment(), Adapter.OnItemClickListener {
 
     private fun EventChangeListener() {
         db.collection("votacoes")
-            .document("Filmes") // Assuming "Filmes" is a document, change this according to your Firestore structure
+            .document("Filmes")
             .collection("items")
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.e("Firestore error", error.message.toString())
-                    // Handle error, if needed
                     return@addSnapshotListener
                 }
+                for (dc in value!!.documentChanges) {
+                    if (dc.type == DocumentChange.Type.ADDED) {
+                        val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
+                        orientacaoVoto.id = dc.document.id // Store the document ID
+                        orientacaoVotos.add(orientacaoVoto)
 
-                value?.let { snapshot ->
-                    for (dc in snapshot.documentChanges) {
-                        if (dc.type == DocumentChange.Type.ADDED) {
-                            val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
-                            orientacaoVotos.add(orientacaoVoto)
-                            adapter.notifyDataSetChanged()
-                        }
+                        val title = orientacaoVoto.Titulo
+                        val description = orientacaoVoto.Descrição
+                        val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
+                        Log.d("Firestore", "Titulo: $title, Descricao: $description, Timer: $timer")
                     }
                 }
+                adapter.notifyDataSetChanged()
             }
-
     }
+
     override fun onItemClick(orientacaoVoto: OrientacaoVotos) {
-        // Create an Intent to start AntesVotarActivity
+        // Retrieve the title, description, and timer of the selected item
+        val title = orientacaoVoto.Titulo
+        val description = orientacaoVoto.Descrição
+        val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
+
+        // Create an Intent to start AntesVotarActivity and pass the data as extras
         val intent = Intent(requireContext(), AntesVotarActivity::class.java).apply {
-            // Pass selected item data to AntesVotarActivity
-            putExtra("selectedItem", orientacaoVoto)
+            putExtra("title", title)
+            putExtra("description", description)
+            putExtra("timer", timer)
+            putExtra("id", orientacaoVoto.id)
         }
+
         // Start the activity if the context is not null
         requireContext().startActivity(intent)
     }
-
 }

@@ -76,15 +76,16 @@
             android:background="@color/black">
         </TextView>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclar"
             android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:minHeight="450dp"
-            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            android:minHeight="550dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="#FA7013">
-        </LinearLayout>
+            android:foregroundGravity="fill"
+            android:orientation="vertical"
+            android:background="@color/orange"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

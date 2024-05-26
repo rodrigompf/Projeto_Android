@@ -7,7 +7,8 @@ data class OrientacaoVotos(
     var Titulo: String? = null,
     var Descrição: String? = null,
     var Votos: Int? = null,
-    var Timer: Long? = null
+    var Timer: Long? = null,
+    var id: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
