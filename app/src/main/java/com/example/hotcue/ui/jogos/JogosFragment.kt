@@ -16,7 +16,7 @@ import com.example.hotcue.R
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 
-class JogosFragment: Fragment(), Adapter.OnItemClickListener {
+class JogosFragment : Fragment(), Adapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: Adapter
     private lateinit var db: FirebaseFirestore
@@ -38,7 +38,6 @@ class JogosFragment: Fragment(), Adapter.OnItemClickListener {
         recyclerView.adapter = adapter
 
         db = FirebaseFirestore.getInstance()
-
 
         EventChangeListener()
 

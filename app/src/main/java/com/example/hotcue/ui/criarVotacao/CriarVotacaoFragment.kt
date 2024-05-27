@@ -75,10 +75,12 @@ class CriarVotacaoFragment : Fragment() {
                     .addOnSuccessListener { result ->
                         val documentCount = result.size() // Count of existing documents
 
-                        // Set the document with an incremented identifier
+                        // Set the document with a concatenated identifier
+                        val documentId = "${tipoVotacao}_${documentCount + 1}"
+
                         db.collection("votacoes").document(tipoVotacao)
                             .collection("items")
-                            .document((documentCount + 1).toString()) // Assigning a unique number
+                            .document(documentId) // Assigning a unique name with type and number
                             .set(userMap)
                             .addOnSuccessListener {
                                 etextView.text.clear()

@@ -19,7 +19,7 @@ class AntesVotarActivity : AppCompatActivity() {
     private lateinit var timer: String
     private lateinit var id: String
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: Adapter1 // Change the adapter type to Adapter1
+    private lateinit var adapter: Adapter1
     private lateinit var orientacaoVotos: ArrayList<OrientacaoVotos>
     private lateinit var db: FirebaseFirestore
 
@@ -69,7 +69,7 @@ class AntesVotarActivity : AppCompatActivity() {
 
     private fun loadVotacoesItems() {
         db.collection("votacoes")
-            .document("Outros")
+            .document("Jogos")
             .collection("items")
             .document(id)
             .collection("list")
@@ -79,9 +79,23 @@ class AntesVotarActivity : AppCompatActivity() {
                     return@addSnapshotListener
                 }
 
+                orientacaoVotos.clear() // Clear the list before adding new items
                 for (dc in value!!.documentChanges) {
                     if (dc.type == DocumentChange.Type.ADDED) {
-                        val orientacaoVoto = dc.document.toObject(OrientacaoVotos::class.java)
+                        val data = dc.document.data
+                        val votos = when (val votosField = data["votos"]) {
+                            is Long -> votosField.toInt()
+                            is String -> votosField.toIntOrNull() ?: 0
+                            else -> 0
+                        }
+
+                        val orientacaoVoto = OrientacaoVotos(
+                            id = dc.document.id,
+                            Titulo = data["Titulo"] as? String,
+                            Descrição = data["Descrição"] as? String,
+                            Timer = data["Timer"] as? Long,
+                            Votos = votos
+                        )
                         orientacaoVotos.add(orientacaoVoto)
                     }
                 }

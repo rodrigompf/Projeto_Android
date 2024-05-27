@@ -14,7 +14,8 @@ data class OrientacaoVotos(
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Long::class.java.classLoader) as? Long
+        parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -22,6 +23,7 @@ data class OrientacaoVotos(
         parcel.writeString(Descrição)
         parcel.writeValue(Votos)
         parcel.writeValue(Timer)
+        parcel.writeString(id)
     }
 
     override fun describeContents(): Int {

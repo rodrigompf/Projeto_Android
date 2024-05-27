@@ -54,7 +54,7 @@
                         android:id="@+id/button.votes"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
-                        android:hint="tempo para acabar"
+                        android:hint="Votar"
                         android:textAlignment="center">
                     </Button>
                 </LinearLayout>

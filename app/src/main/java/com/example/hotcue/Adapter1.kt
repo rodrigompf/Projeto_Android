@@ -23,11 +23,16 @@ class Adapter1(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val orientar: OrientacaoVotos = orientarVotosList[position]
+        val orientar = orientarVotosList[position]
         holder.titulo.text = orientar.Titulo
         holder.votes.text = orientar.Votos.toString()
 
-        // Set OnClickListener for the button
+        // Set OnClickListener for the item view
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(orientar)
+        }
+
+        // Set OnClickListener for the vote button
         holder.voteButton.setOnClickListener {
             itemClickListener.onVoteButtonClick(orientar)
         }
