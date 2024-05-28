@@ -60,6 +60,7 @@
             android:textColorHint="@color/black"
             android:backgroundTint="@color/orange"
             android:layout_gravity="center"
+            android:id="@+id/adicionarproposta"
             android:layout_marginTop="20dp">
         </Button>
 

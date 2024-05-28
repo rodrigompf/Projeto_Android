@@ -16,7 +16,7 @@ import com.example.hotcue.R
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MusicasFragment: Fragment(), Adapter.OnItemClickListener {
+class MusicasFragment : Fragment(), Adapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: Adapter
     private lateinit var db: FirebaseFirestore
@@ -38,7 +38,6 @@ class MusicasFragment: Fragment(), Adapter.OnItemClickListener {
         recyclerView.adapter = adapter
 
         db = FirebaseFirestore.getInstance()
-
 
         EventChangeListener()
 
@@ -71,20 +70,18 @@ class MusicasFragment: Fragment(), Adapter.OnItemClickListener {
     }
 
     override fun onItemClick(orientacaoVoto: OrientacaoVotos) {
-        // Retrieve the title, description, and timer of the selected item
         val title = orientacaoVoto.Titulo
         val description = orientacaoVoto.Descrição
-        val timer = orientacaoVoto.Timer // Assuming timer is a field in OrientacaoVotos
+        val timer = orientacaoVoto.Timer
 
-        // Create an Intent to start AntesVotarActivity and pass the data as extras
         val intent = Intent(requireContext(), AntesVotarActivity::class.java).apply {
             putExtra("title", title)
             putExtra("description", description)
             putExtra("timer", timer)
             putExtra("id", orientacaoVoto.id)
+            putExtra("category", "Musica") // Pass the category
         }
 
-        // Start the activity if the context is not null
         requireContext().startActivity(intent)
     }
 }

@@ -1,10 +1,13 @@
 package com.example.hotcue
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,6 +21,7 @@ class AntesVotarActivity : AppCompatActivity() {
     private lateinit var descricao: String
     private lateinit var timer: String
     private lateinit var id: String
+    private lateinit var category: String
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: Adapter1
     private lateinit var orientacaoVotos: ArrayList<OrientacaoVotos>
@@ -31,6 +35,7 @@ class AntesVotarActivity : AppCompatActivity() {
         descricao = intent.getStringExtra("description") ?: ""
         timer = intent.getStringExtra("timer") ?: ""
         id = intent.getStringExtra("id") ?: ""
+        category = intent.getStringExtra("category") ?: "Jogos"
 
         val tituloTextView = findViewById<TextView>(R.id.TituloAntes)
         val descricaoTextView = findViewById<TextView>(R.id.DescriçãoAntes)
@@ -45,6 +50,11 @@ class AntesVotarActivity : AppCompatActivity() {
             finish()
         }
 
+        val addProposalButton = findViewById<Button>(R.id.adicionarproposta)
+        addProposalButton.setOnClickListener {
+            showAddProposalDialog()
+        }
+
         recyclerView = findViewById(R.id.recyclar)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
@@ -57,7 +67,6 @@ class AntesVotarActivity : AppCompatActivity() {
 
             override fun onVoteButtonClick(orientacaoVoto: OrientacaoVotos) {
                 // Handle vote button click
-                // You can implement the logic here to update the vote count in the database
             }
         })
         recyclerView.adapter = adapter
@@ -69,7 +78,7 @@ class AntesVotarActivity : AppCompatActivity() {
 
     private fun loadVotacoesItems() {
         db.collection("votacoes")
-            .document("Jogos")
+            .document(category)
             .collection("items")
             .document(id)
             .collection("list")
@@ -79,7 +88,7 @@ class AntesVotarActivity : AppCompatActivity() {
                     return@addSnapshotListener
                 }
 
-                orientacaoVotos.clear() // Clear the list before adding new items
+                orientacaoVotos.clear()
                 for (dc in value!!.documentChanges) {
                     if (dc.type == DocumentChange.Type.ADDED) {
                         val data = dc.document.data
@@ -101,5 +110,54 @@ class AntesVotarActivity : AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
             }
+    }
+
+    private fun showAddProposalDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Adicionar Proposta")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog, which ->
+            val proposalText = input.text.toString()
+            saveProposal(proposalText)
+        }
+        builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
+
+        builder.show()
+    }
+
+    private fun saveProposal(proposalText: String) {
+        val proposal = hashMapOf(
+            "Titulo" to proposalText,
+            "votos" to 0
+        )
+
+        val listRef = db.collection("votacoes")
+            .document(category)
+            .collection("items")
+            .document(id)
+            .collection("list")
+
+        listRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val documents = task.result
+                val maxNumber = documents?.mapNotNull { it.id.toIntOrNull() }?.maxOrNull() ?: 0
+                val newNumber = maxNumber + 1
+
+                listRef.document(newNumber.toString()).set(proposal)
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "DocumentSnapshot written with ID: $newNumber")
+                        loadVotacoesItems()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Firestore", "Error adding document", e)
+                    }
+            } else {
+                Log.w("Firestore", "Error checking collection existence", task.exception)
+            }
+        }
     }
 }

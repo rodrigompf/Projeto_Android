@@ -82,6 +82,7 @@ class OutrosFragment : Fragment(), Adapter.OnItemClickListener {
             putExtra("description", description)
             putExtra("timer", timer)
             putExtra("id", orientacaoVoto.id)
+            putExtra("category", "Outros")
         }
 
         // Start the activity if the context is not null
